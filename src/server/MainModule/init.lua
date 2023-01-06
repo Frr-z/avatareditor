@@ -251,34 +251,4 @@ function Main:GetItensByCategory(Category : string, Cursor : string, SortType : 
     end):catch(warn)
 end
 
-
-
-Players.PlayerAdded:Connect(function(player)
-	player.CharacterAdded:Connect(function()
-		Main:MorphFromPlayerIdAsync(player, 2528081463):andThen(function(Res)
-            print(Res)
-			Main:GetUserInventoryAsync(player.UserId, ""):andThen(function(Res2)
-                print(Res2)
-                Main:GetItensByCategory("1", "", "", "", ""):andThen(function(Res3)
-                    print(Res3)
-                    Main:GetPlayerGears(player.UserId):andThen(function(Res4)
-						print(Res4)
-						Main:GetHumanoidDescriptionFromUserId(player.UserId):andThen(function(Res5)
-							print(Res5)
-							Main:GetHumanoidDescriptionFromUsername(player.Name):andThen(function(Res6)
-								print(Res6)
-								Main:GetCharacterAppearanceInfoAsync(player.UserId):andThen(function(Res7)
-									print(Res7)
-									Main:RemovePlayerAccessories(player)
-								end)
-							end)
-						end)
-                    end)
-                end)
-            end)
-        end)
-	end)
-end)
-
-
 return Main
