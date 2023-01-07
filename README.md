@@ -17,7 +17,7 @@ Make sure to put "" in the string parameters that you won't use
 ```lua
 Players.PlayerAdded:Connect(function(player)
         Main:GetUserInventoryAsync(player.UserId, ""):andThen(function(Response)
-            Main:GetItensByCategory("1", "", "", "", ""):andThenCall(foo, "args")
+            Main:GetItemsByCategory("1", "", "", "", ""):andThenCall(foo, "args")
         end)    
 end)
 ```

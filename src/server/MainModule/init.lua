@@ -310,7 +310,7 @@ end
 --[=[
      Loads relevant itens of each Category and/or Subcategory with/without its filters. Check https://create.roblox.com/docs/studio/catalog-api#:~:text=%7D-,Avatar%20Catalog%20API,-You%20can%20query 
      
-     @method GetItensByCategory
+     @method GetItemsByCategory
      @within AvatarEditor	
      @param Category string  -- Check link below for more details
      @param Cursos string -- Check link below for more details
@@ -321,7 +321,7 @@ end
      @return Promise<table?>
 ]=]
 
-function AvatarEditor:GetItensByCategory(Category : string, Cursor : string, SortType : string, Subcategory : string, CreatorName: string)
+function AvatarEditor:GetItemsByCategory(Category : string, Cursor : string, SortType : string, Subcategory : string, CreatorName: string)
     return Promise.new(function(Resolve, Reject)
         if Category ~= "" then
             Category = "Category="..Category
