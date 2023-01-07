@@ -4,7 +4,7 @@ Some [promise](https://eryn.io/roblox-lua-promise/)-based methods to deal with R
 
 ## Instalation
 
-[Roblox model]("https://www.roblox.com/library/12074132482/AvatarEditor") -> Read the README script
+For Studio users: [Roblox Model]("https://www.roblox.com/library/12074132482/AvatarEditor") -- Read the README script
 
 For Rojo users, just put the MainModule folders inside your Server/Client directory and the Promise inside ReplicatedStorage
 
