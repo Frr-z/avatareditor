@@ -267,7 +267,7 @@ function Main:GetRolimonsLimitedsInfos()
 						ItemInformation[Information] = "true"
 					end
 				end
-				
+								
 				Data[ItemInformation[1]] = {
 					["Item_Name"] = ItemInformation[1],
 					["Acronym"] = ItemInformation[2],
@@ -279,6 +279,7 @@ function Main:GetRolimonsLimitedsInfos()
 					["Projected"] = ItemInformation[8],
 					["Hyped"] = ItemInformation[9],
 					["Rare"] = ItemInformation[10],
+					["Item_Id"] = Id
 				}
 			end
 		end
