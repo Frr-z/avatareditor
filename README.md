@@ -4,13 +4,13 @@ Some [promise](https://eryn.io/roblox-lua-promise/)-based methods to deal with R
 
 ## Instalation
 
-For Studio users: [Roblox Model]("https://www.roblox.com/library/12074132482/AvatarEditor") -- Read the README script
+For Studio users: There's a model in my profile, I can't put the link here :skull:
 
 For Rojo users, just put the MainModule folders inside your Server/Client directory and the Promise inside ReplicatedStorage
 
 ## Usage 
 
-The function names are pretty self-explanatory. Don't forget to do your type checking before calling the function (--!strict)
+The function names are pretty self-explanatory. Don't forget to do your type checking before calling the function
 
 Make sure to put "" in the string parameters that you won't use
 
