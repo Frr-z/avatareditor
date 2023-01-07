@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[311],{63891:r=>{r.exports=JSON.parse('{"sourceUrl":"https://github.com/Frr-z/avatareditor/blob/master","baseUrl":"/avatareditor/","classOrder":[],"apiCategories":[]}')}}]);
