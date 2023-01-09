@@ -20,14 +20,16 @@ AvatarEditor.__index = AvatarEditor
 local Cached = {}
 local CacheSignal = Signal.new()
 local CacheLimit = 50
+local CachedCount = 0
 
 local LoadedInventories = {}
 
 CacheSignal:Connect(function(Url, Response)
-	if Cached[Url] == nil and #Cached <= CacheLimit then
-	   Cached[Url] =  { 
+	if Cached[Url] == nil and CachedCount <= CacheLimit then
+		CachedCount += 1
+	    Cached[Url] =  { 
 		Data = Response,
-		Index = #Cached
+		Index = CachedCount
 	   }
 	else 
 		for Url, Data in pairs(Cached) do
@@ -35,6 +37,7 @@ CacheSignal:Connect(function(Url, Response)
 				table.remove(Cached, Url)
 			end
 		end
+		CachedCount -= 1
 	end
 end)
 
