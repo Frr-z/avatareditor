@@ -39,6 +39,8 @@ CacheSignal:Connect(function(Url, Response)
 end)
 
 --[=[
+	 Get cached URLs
+
 	 @method GetCached
 	 @within AvatarEditor
 ]=]
