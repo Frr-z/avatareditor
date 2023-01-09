@@ -1,12 +1,8 @@
---- Not using this at the moment
 
 local AvatarEditorService = game:GetService("AvatarEditorService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Promise = require(ReplicatedStorage.Promise)
-
-
-local Main = {}
 
 
 function Main:GetItemDetailsAsync(Item : number, ItemType :  AvatarItemType)
