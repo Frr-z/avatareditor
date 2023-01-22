@@ -163,9 +163,25 @@ function AvatarEditor:RemovePlayerAccessories(Player : Player)
 end
 
 --[=[
+	 This function removes ALL the model accessories just with its Model Instance.
+ 
+	 @method RemoveModelAccessories
+	 @within AvatarEditor	
+	 @param Model Instance -- The model to remove accessories  
+	 @server
+	 @tag Not cached   
+]=]
+
+
+function AvatarEditor:RemoveModelAccessories(Model : Player)
+	local Humanoid = Model:FindFirstChild("Humanoid")
+	Humanoid:RemoveAccessories()
+end
+
+--[=[
 	 This function adds a SINGLE accessory into player's character
  
-	 @method AddPlayerAccessories
+	 @method AddPlayerAccessory
 	 @within AvatarEditor	
 	 @param Player Player -- The player to add accessory
 	 @param Accessory Accessory -- The accessory to add into the player's character 
@@ -174,9 +190,25 @@ end
 ]=]
 
 
-function AvatarEditor:AddPlayerAccessories(Player : Player, Accessory : Accessory)
+function AvatarEditor:AddPlayerAccessory(Player : Player, Accessory : Accessory)
 	local Character = Player.Character or Player.CharacterAdded:Wait()
 	local Humanoid = Character:FindFirstChild("Humanoid")
+	Humanoid:AddAccessory(Accessory)
+end
+
+--[=[
+	 This function adds a SINGLE accessory into model ( with humanoid )
+ 
+	 @method AddModelAccessory
+	 @within AvatarEditor	
+	 @param Model Instance -- The model to add accessory ( needs humanoid)
+	 @param Accessory Accessory -- The accessory to add into the model
+	 @server
+	 @tag Not cached
+]=]
+
+function AvatarEditor:AddModelAccessory(Model : Instance, Accessory : Accessory)
+	local Humanoid = Model:FindFirstChild("Humanoid")
 	Humanoid:AddAccessory(Accessory)
 end
 
@@ -256,7 +288,7 @@ end
 
 
 function AvatarEditor:GetUserInventoryAsync(Id : number, Cursor : string)
-	if Cursor ~= "" then 
+	if Cursor ~= nil then 
 		Cursor = "&cursor="..Cursor
 	end
 	
@@ -383,33 +415,37 @@ end
 	 @method GetItemsByCategory
 	 @within AvatarEditor	
 	 @param Category string  -- Check link below for more details
-	 @param Cursos string -- Check link below for more details
-	 @param SortType string -- Check link below for more details
 	 @param Subcategory string -- Check link below for more details
+	 @param SalesTypeFilter string -- Check link below for more details
+	 @param Cursor string -- Check link below for more details
+	 @param SortType string -- Check link below for more details
 	 @param CreatorName string -- Check link below for more details
 	 @server
 	 @tag Cached
 	 @return Promise<table?>
 ]=]
 
-function AvatarEditor:GetItemsByCategory(Category : string, Cursor : string, SortType : string, Subcategory : string, CreatorName: string)
-	if Category ~= "" then
+function AvatarEditor:GetItemsByCategory(Category : string, Subcategory : string, SalesTypeFilter : string, Cursor : string, SortType : string, CreatorName: string)
+	if Category ~= nil then
 		Category = "Category="..Category
 	end
-	if Cursor ~= "" then
+	if SalesTypeFilter  ~= nil then
+		SalesTypeFilter = "salesTypeFilter"..SalesTypeFilter
+	end
+	if Cursor ~= nil then
 		Cursor = "&Cursor="..Cursor
 	end
-	if SortType ~= "" then
+	if SortType ~= nil then
 		SortType = "&SortType="..SortType
 	end
-	if Subcategory ~= "" then
+	if Subcategory ~= nil then
 		Subcategory = "&Subcategory="..Subcategory
 	end
-	if CreatorName ~= "" then
+	if CreatorName ~= nil then
 		CreatorName = "&CreatorName="..CreatorName
 	end
 	
-	local Url = "https://catalog.roproxy.com/v1/search/items/details?"..Category..Cursor..SortType..Subcategory..CreatorName.."&Limit=30"
+	local Url = "https://catalog.roproxy.com/v1/search/items/details?"..Category..Cursor..SortType..Subcategory..CreatorName..SalesTypeFilter.."&Limit=30"
 
 	return Promise.new(function(Resolve, Reject)
 		if AvatarEditor:GetCached(Url) then
