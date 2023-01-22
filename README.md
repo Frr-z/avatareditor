@@ -12,7 +12,7 @@ For Rojo users, just put the MainModule folders inside your Server/Client direct
 
 The function names are pretty self-explanatory. Don't forget to do your type checking before calling the function
 
-Make sure to put "" in the string parameters that you won't use
+Make sure to put nil in the string parameters that you won't use
 
 ```lua
 Players.PlayerAdded:Connect(function(player)
