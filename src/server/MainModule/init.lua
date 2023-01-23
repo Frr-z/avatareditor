@@ -28,7 +28,7 @@ CacheSignal:Connect(function(Url, Response)
 	if Cached[Url] == nil and CachedCount <= CacheLimit then
 		CachedCount += 1
 	    Cached[Url] =  { 
-		Data = Response,
+		data = Response,
 		Index = CachedCount
 	   }
 	else 
