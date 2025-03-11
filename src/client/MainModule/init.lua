@@ -1,78 +1,109 @@
-
 local AvatarEditorService = game:GetService("AvatarEditorService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Promise = require(ReplicatedStorage.Promise)
 
+--[=[
+    @class Main
+    A module to handle avatar-related functionalities on the client side.
+]=]
+local Main = {}
 
-function Main:GetItemDetailsAsync(Item : number, ItemType :  AvatarItemType)
+--[=[
+    Retrieves item details asynchronously.
+    @method GetItemDetailsAsync
+    @within Main
+    @param Item number -- The item ID.
+    @param ItemType AvatarItemType -- The type of the item.
+    @return Promise<table>
+]=]
+function Main:GetItemDetailsAsync(Item, ItemType)
     return Promise.new(function(Resolve, Reject)
         local Details
-        local Sucess, Error = pcall(function()
-             Details = AvatarEditorService:GetItemDetails(Item, Type)
+        local Success, Error = pcall(function()
+            Details = AvatarEditorService:GetItemDetails(Item, ItemType)
         end)
-        if not Sucess then 
+        if not Success then
             return Reject(Error or "Can't get item details")
         end
-        if type(Details) ~= "table" then 
-            return Reject(Error or "Detail type isn't a table")
+        if type(Details) ~= "table" then
+            return Reject("Detail type isn't a table")
         end
         return Resolve(Details)
     end):catch(warn)
-end  
-
-
-function Main:GetUserInventoryAsync(AssetTypes)
-    return Promise.new(function(Resolve, Reject)
-        local InventoryPage 
-        local Sucess, Error = pcall(function()
-            InventoryPage = AvatarEditorService:GetInventory(AssetTypes)
-        end)
-
-        if not Sucess or type(InventoryPage) ~= "InventoryPages" then 
-            return Reject(Error or "Err")
-        end
-
-        return Resolve(InventoryPage)
-    end):catch(warn)
-end    
-
-
-function Main:GetOutfitsAsync(OutfitSource, OutfitType)
-return Promise.new(function(Resolve, Reject)
-    local Outfit 
-
-    local Sucess, Error = pcall(function()
-        Outfit = AvatarEditorService:GetOutfits(OutfitSource or 1, OutfitType or 1)
-    end)
-
-    if not Sucess or type(Outfit) ~= "OutfitPages" then 
-      return Reject(Error or "error while loading outfit")
-    end
-
-    return Resolve(Outfit)
-end):catch(warn)
 end
 
-function Main:GetBatchItemDetailsAsync(IDs : table, ItemType : AvatarItemType) 
+--[=[
+    Retrieves user inventory asynchronously.
+    @method GetUserInventoryAsync
+    @within Main
+    @param AssetTypes table -- The types of assets to retrieve.
+    @return Promise<InventoryPages>
+]=]
+function Main:GetUserInventoryAsync(AssetTypes)
+    return Promise.new(function(Resolve, Reject)
+        local InventoryPage
+        local Success, Error = pcall(function()
+            InventoryPage = AvatarEditorService:GetInventory(AssetTypes)
+        end)
+        if not Success or type(InventoryPage) ~= "InventoryPages" then
+            return Reject(Error or "Error retrieving inventory")
+        end
+        return Resolve(InventoryPage)
+    end):catch(warn)
+end
+
+--[=[
+    Retrieves outfits asynchronously.
+    @method GetOutfitsAsync
+    @within Main
+    @param OutfitSource number -- The source of the outfits.
+    @param OutfitType number -- The type of the outfits.
+    @return Promise<OutfitPages>
+]=]
+function Main:GetOutfitsAsync(OutfitSource, OutfitType)
+    return Promise.new(function(Resolve, Reject)
+        local Outfit
+        local Success, Error = pcall(function()
+            Outfit = AvatarEditorService:GetOutfits(OutfitSource or 1, OutfitType or 1)
+        end)
+        if not Success or type(Outfit) ~= "OutfitPages" then
+            return Reject(Error or "Error while loading outfit")
+        end
+        return Resolve(Outfit)
+    end):catch(warn)
+end
+
+--[=[
+    Retrieves batch item details asynchronously.
+    @method GetBatchItemDetailsAsync
+    @within Main
+    @param IDs table -- The IDs of the items.
+    @param ItemType AvatarItemType -- The type of the items.
+    @return Promise<table>
+]=]
+function Main:GetBatchItemDetailsAsync(IDs, ItemType)
     return Promise.new(function(Resolve, Reject)
         local Array
-        local Sucess, Error = pcall(function()
-            Array = AvatarEditorService:GetBatchItemDetails()
+        local Success, Error = pcall(function()
+            Array = AvatarEditorService:GetBatchItemDetails(IDs, ItemType)
         end)
-
-        if not Sucess or type(Array) ~= "table" then 
-            Reject(Error or "Error while getting batch")
-        end     
-
+        if not Success or type(Array) ~= "table" then
+            return Reject(Error or "Error while getting batch")
+        end
         return Resolve(Array)
     end):catch(warn)
 end
 
+--[=[
+    Prompts the creation of an outfit.
+    @method CreateOutfit
+    @within Main
+    @param HumanoidDescription HumanoidDescription -- The humanoid description.
+    @param RigType Enum.HumanoidRigType -- The rig type.
+]=]
 function Main:CreateOutfit(HumanoidDescription, RigType)
-    AvatarEditorService:PromptCreateOutfit(HumanoidDescription, RigType)    
+    AvatarEditorService:PromptCreateOutfit(HumanoidDescription, RigType)
 end
-
-
 
 return Main
