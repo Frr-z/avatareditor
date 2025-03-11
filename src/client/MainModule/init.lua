@@ -4,20 +4,20 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Promise = require(ReplicatedStorage.Promise)
 
 --[=[
-    @class Main
+    @class Client
     A module to handle avatar-related functionalities on the client side.
 ]=]
-local Main = {}
+local Client = {}
 
 --[=[
     Retrieves item details asynchronously.
     @method GetItemDetailsAsync
-    @within Main
+    @within Client
     @param Item number -- The item ID.
     @param ItemType AvatarItemType -- The type of the item.
     @return Promise<table>
 ]=]
-function Main:GetItemDetailsAsync(Item, ItemType)
+function Client:GetItemDetailsAsync(Item, ItemType)
     return Promise.new(function(Resolve, Reject)
         local Details
         local Success, Error = pcall(function()
@@ -36,11 +36,11 @@ end
 --[=[
     Retrieves user inventory asynchronously.
     @method GetUserInventoryAsync
-    @within Main
+    @within Client
     @param AssetTypes table -- The types of assets to retrieve.
     @return Promise<InventoryPages>
 ]=]
-function Main:GetUserInventoryAsync(AssetTypes)
+function Client:GetUserInventoryAsync(AssetTypes)
     return Promise.new(function(Resolve, Reject)
         local InventoryPage
         local Success, Error = pcall(function()
@@ -56,12 +56,12 @@ end
 --[=[
     Retrieves outfits asynchronously.
     @method GetOutfitsAsync
-    @within Main
+    @within Client
     @param OutfitSource number -- The source of the outfits.
     @param OutfitType number -- The type of the outfits.
     @return Promise<OutfitPages>
 ]=]
-function Main:GetOutfitsAsync(OutfitSource, OutfitType)
+function Client:GetOutfitsAsync(OutfitSource, OutfitType)
     return Promise.new(function(Resolve, Reject)
         local Outfit
         local Success, Error = pcall(function()
@@ -77,12 +77,12 @@ end
 --[=[
     Retrieves batch item details asynchronously.
     @method GetBatchItemDetailsAsync
-    @within Main
+    @within Client
     @param IDs table -- The IDs of the items.
     @param ItemType AvatarItemType -- The type of the items.
     @return Promise<table>
 ]=]
-function Main:GetBatchItemDetailsAsync(IDs, ItemType)
+function Client:GetBatchItemDetailsAsync(IDs, ItemType)
     return Promise.new(function(Resolve, Reject)
         local Array
         local Success, Error = pcall(function()
@@ -98,12 +98,12 @@ end
 --[=[
     Prompts the creation of an outfit.
     @method CreateOutfit
-    @within Main
+    @within Client
     @param HumanoidDescription HumanoidDescription -- The humanoid description.
     @param RigType Enum.HumanoidRigType -- The rig type.
 ]=]
-function Main:CreateOutfit(HumanoidDescription, RigType)
+function Client:CreateOutfit(HumanoidDescription, RigType)
     AvatarEditorService:PromptCreateOutfit(HumanoidDescription, RigType)
 end
 
-return Main
+return Client

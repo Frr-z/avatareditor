@@ -1,3 +1,6 @@
+# VS Code
+/.vscode 
+
 # Project place file
 /avatareditor.rbxlx
 
@@ -6,3 +9,7 @@
 /*.rbxl.lock
 
 /build
+
+# Outro 
+/default.project.json
+/aftman.toml

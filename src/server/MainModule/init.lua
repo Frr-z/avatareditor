@@ -15,7 +15,7 @@ AvatarEditor.__index = AvatarEditor
 
 local Cached = {}
 local CacheSignal = Signal.new()
-local CacheLimit = 100 -- Increased cache limit for better performance
+local CacheLimit = 200 
 local CachedCount = 0
 
 local LoadedInventories = {}
@@ -186,14 +186,14 @@ end
     @return Promise<table?>
 ]=]
 function AvatarEditor:GetPlayerGears(Id)
-    local Url = ("https://inventory.roproxy.com/v2/users/%s/inventory?assetTypes=Gear&limit=100&sortOrder=Asc"):format(Id)
+    local Url = ("users/%s/inventory?assetTypes=Gear&limit=100&sortOrder=Asc"):format(Id)
     return Promise.new(function(Resolve, Reject)
         if self:GetCached(Url) then
             return Resolve(self:GetCached(Url))
         else
             local Response
             local Success, Error = pcall(function()
-                Response = HttpService:JSONDecode(HttpService:GetAsync(Url))
+                Response = HttpService:JSONDecode(HttpService:GetAsync("https://inventory.roproxy.com/v2/" .. Url))
             end)
             if not Success then
                 return Reject(Error)
@@ -218,7 +218,7 @@ function AvatarEditor:GetUserInventoryAsync(Id, Cursor)
     else
         Cursor = ""
     end
-    local Url = ("https://inventory.roproxy.com/v2/users/%s/inventory?assetTypes=Gear%%2C,Hat%%2C,TShirt%%2C,Shirt%%2C,Pants%%2C,Head%%2C,Face%%2C,Animation%%2C,Torso%%2C,RightArm%%2C,LeftArm%%2C,LeftLeg%%2C,RightLeg%%2C,Package%%2C,HairAccessory%%2C,FaceAccessory%%2C,NeckAccessory%%2C,ShoulderAccessory%%2C,FrontAccessory%%2C,BackAccessory%%2C,WaistAccessory%%2C,ClimbAnimation%%2C,DeathAnimation%%2C,FallAnimation%%2C,IdleAnimation%%2C,JumpAnimation%%2C,RunAnimation%%2C,SwimAnimation%%2C,WalkAnimation%%2C,PoseAnimation%%2C,TShirtAccessory%%2C,ShirtAccessory%%2C,PantsAccessory%%2C,JacketAccessory%%2C,SweaterAccessory%%2C,ShortsAccessory%%2C,LeftShoeAccessory%%2C,RightShoeAccessory%%2C,DressSkirtAccessory%%2C,EyebrowAccessory%%2C,EyelashAccessory%%2C,MoodAnimation%%2C,DynamicHead%s&limit=100&sortOrder=Asc"):format(Id, Cursor)
+    local Url = ("users/%s/inventory?assetTypes=Gear%%2C,Hat%%2C,TShirt%%2C,Shirt%%2C,Pants%%2C,Head%%2C,Face%%2C,Animation%%2C,Torso%%2C,RightArm%%2C,LeftArm%%2C,LeftLeg%%2C,RightLeg%%2C,Package%%2C,HairAccessory%%2C,FaceAccessory%%2C,NeckAccessory%%2C,ShoulderAccessory%%2C,FrontAccessory%%2C,BackAccessory%%2C,WaistAccessory%%2C,ClimbAnimation%%2C,DeathAnimation%%2C,FallAnimation%%2C,IdleAnimation%%2C,JumpAnimation%%2C,RunAnimation%%2C,SwimAnimation%%2C,WalkAnimation%%2C,PoseAnimation%%2C,TShirtAccessory%%2C,ShirtAccessory%%2C,PantsAccessory%%2C,JacketAccessory%%2C,SweaterAccessory%%2C,ShortsAccessory%%2C,LeftShoeAccessory%%2C,RightShoeAccessory%%2C,DressSkirtAccessory%%2C,EyebrowAccessory%%2C,EyelashAccessory%%2C,MoodAnimation%%2C,DynamicHead%s&limit=100&sortOrder=Asc"):format(Id, Cursor)
     return Promise.new(function(Resolve, Reject)
         if self:GetCached(Url) then
             return Resolve(self:GetCached(Url))
@@ -228,7 +228,7 @@ function AvatarEditor:GetUserInventoryAsync(Id, Cursor)
             end
             local Response
             local Success, Error = pcall(function()
-                Response = HttpService:JSONDecode(HttpService:GetAsync(Url))
+                Response = HttpService:JSONDecode(HttpService:GetAsync("https://inventory.roproxy.com/v2/" .. Url))
             end)
             if not Success then
                 return Reject(Error)
@@ -259,14 +259,14 @@ end
     @return Promise<boolean?>
 ]=]
 function AvatarEditor:CheckIfUserOwnsItem(Id, ItemId)
-    local Url = ("https://inventory.roproxy.com/v1/users/%s/items/Asset/%s/is-owned"):format(Id, ItemId)
+    local Url = ("users/%s/items/Asset/%s/is-owned"):format(Id, ItemId)
     return Promise.new(function(Resolve, Reject)
         if self:GetCached(Url) then
             return Resolve(self:GetCached(Url))
         else
             local Response
             local Success, Error = pcall(function()
-                Response = HttpService:JSONDecode(HttpService:GetAsync(Url))
+                Response = HttpService:JSONDecode(HttpService:GetAsync("https://inventory.roproxy.com/v1/" .. Url))
             end)
             if not Success then
                 return Reject(Error)
@@ -290,7 +290,7 @@ end
     @return Promise<table?>
 ]=]
 function AvatarEditor:GetItemsByCategory(Category, Subcategory, SalesTypeFilter, Cursor, SortType, CreatorName)
-    local Url = ("https://catalog.roproxy.com/v1/search/items/details?Category=%s&Subcategory=%s&SalesTypeFilter=%s&Cursor=%s&SortType=%s&CreatorName=%s&Limit=30"):format(
+    local Url = ("search/items/details?Category=%s&Subcategory=%s&SalesTypeFilter=%s&Cursor=%s&SortType=%s&CreatorName=%s&Limit=30"):format(
         Category or "", Subcategory or "", SalesTypeFilter or "", Cursor or "", SortType or "", CreatorName or "")
     return Promise.new(function(Resolve, Reject)
         if self:GetCached(Url) then
@@ -298,7 +298,7 @@ function AvatarEditor:GetItemsByCategory(Category, Subcategory, SalesTypeFilter,
         else
             local Response
             local Success, Error = pcall(function()
-                Response = HttpService:JSONDecode(HttpService:GetAsync(Url, true))
+                Response = HttpService:JSONDecode(HttpService:GetAsync("https://catalog.roproxy.com/v1/" .. Url))
             end)
             if not Success then
                 return Reject(Error)
@@ -321,14 +321,14 @@ end
     @return Promise<table?>
 ]=]
 function AvatarEditor:GetRolimonsLimitedsInfos()
-    local Url = "https://www.rolimons.com/itemapi/itemdetails"
+    local Url = "itemapi/itemdetails"
     return Promise.new(function(Resolve, Reject)
         if self:GetCached(Url) then
             return Resolve(self:GetCached(Url))
         else
             local Response
             local Success, Error = pcall(function()
-                Response = HttpService:JSONDecode(HttpService:GetAsync(Url))
+                Response = HttpService:JSONDecode(HttpService:GetAsync("https://www.rolimons.com/" .. Url))
             end)
             if not Success then
                 return Reject(Error)
@@ -361,6 +361,71 @@ function AvatarEditor:GetRolimonsLimitedsInfos()
             CacheSignal:Fire(Url, Response.items)
             return Resolve(Data)
         end
+    end):catch(warn)
+end
+
+--[=[
+    Retrieves the current outfit of a player.
+    @method GetCurrentOutfit
+    @within AvatarEditor
+    @param Player Player -- The player whose current outfit will be retrieved.
+    @return Promise<HumanoidDescription?>
+]=]
+function AvatarEditor:GetCurrentOutfit(Player)
+    return Promise.new(function(Resolve, Reject)
+        local Character = Player.Character or Player.CharacterAdded:Wait()
+        local Humanoid = Character:FindFirstChild("Humanoid")
+        if not Humanoid then
+            return Reject("Humanoid not found")
+        end
+        local Description = Humanoid:GetAppliedDescription()
+        return Resolve(Description)
+    end):catch(warn)
+end
+
+--[=[
+    Saves the current outfit of a player.
+    @method SaveCurrentOutfit
+    @within AvatarEditor
+    @param Player Player -- The player whose current outfit will be saved.
+    @param OutfitName string -- The name of the outfit.
+    @return Promise<void>
+]=]
+function AvatarEditor:SaveCurrentOutfit(Player, OutfitName)
+    return Promise.new(function(Resolve, Reject)
+        local Character = Player.Character or Player.CharacterAdded:Wait()
+        local Humanoid = Character:FindFirstChild("Humanoid")
+        if not Humanoid then
+            return Reject("Humanoid not found")
+        end
+        local Description = Humanoid:GetAppliedDescription()
+        local Success, Error = pcall(function()
+            AvatarEditorService:PromptSaveAvatar(Description, OutfitName)
+        end)
+        if not Success then
+            return Reject(Error)
+        end
+        return Resolve()
+    end):catch(warn)
+end
+
+--[=[
+    Loads a saved outfit for a player.
+    @method LoadSavedOutfit
+    @within AvatarEditor
+    @param Player Player -- The player whose saved outfit will be loaded.
+    @param OutfitId number -- The ID of the saved outfit.
+    @return Promise<void>
+]=]
+function AvatarEditor:LoadSavedOutfit(Player, OutfitId)
+    return Promise.new(function(Resolve, Reject)
+        local Success, Error = pcall(function()
+            AvatarEditorService:PromptLoadAvatar(OutfitId)
+        end)
+        if not Success then
+            return Reject(Error)
+        end
+        return Resolve()
     end):catch(warn)
 end
 
